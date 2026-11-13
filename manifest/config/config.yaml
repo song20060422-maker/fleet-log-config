@@ -1,0 +1,20 @@
+# https://goframe.org/docs/web/server-config-file-template
+server:
+  address:     ":8000"
+  openapiPath: "/api.json"
+  swaggerPath: "/swagger"
+
+# https://goframe.org/docs/core/glog-config
+logger:
+  level : "all"
+  stdout: true
+
+# 数据库：SQLite 单文件（纯 Go 驱动，无需 cgo），服务重启后业务结果仍可查询
+database:
+  default:
+    link: "sqlite::@file(./data/fleet.db)"
+
+# 业务参数
+fleet:
+  # 发布回执超时阈值（秒）。题面口径 60 秒；演示可缩短，但测试与演示走同一规则代码路径。
+  timeoutSeconds: 60
