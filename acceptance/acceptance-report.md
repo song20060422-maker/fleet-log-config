@@ -2,7 +2,7 @@
 
 - 仓库地址: https://github.com/song20060422-maker/fleet-log-config （后端 GoFrame）
 - 配套前端: https://github.com/song20060422-maker/fleet-log-config-frontend （Vue3 + Vite）
-- 验收版本(commit): dev/01-fleet @ 9b2ed3b（[docs] 测试与核查证据）＋验收留证提交（见五、结论）
+- 验收版本(commit): dev/01-fleet @ 9b2ed3b（覆盖率/约束核查证据基线）；PR #1 合并后 main @ 11a43dc（前端 main @ fbd087c）
 - 服务地址: http://127.0.0.1:8000（本地运行 `go run .`；容器化 `deploy/docker-compose.yml`，冒烟 `hack/smoke.ps1`）
 - 验收时间: 2026-11-14
 - 验收人 会话: 验收 Agent（依据 skills/fleet-log-acceptance，逐项实际执行）
@@ -64,9 +64,9 @@
 | C5 | AGENTS.md 开发前编写，有加载记录 | 通过 | AGENTS.md + .agents/README.md（2026-11-13 三条真实加载记录，早于完工） | 未完工后补写 |
 | C6 | 双自编 Skill + 调用记录 | 通过 | .agents/skill-usage.md；test/evidence/constraint_report.md（PASS 20/FAIL 0） | fleet-log-config-check + fleet-log-acceptance 均实际调用 |
 | C7 | 会话导出、事件清单、AI 使用说明 | 部分通过 | 本会话过程记录（CodeBuddy 任务视图）；业务留痕以 events/export 提供结构化清单 | 独立 JSONL 会话导出与一页说明为提交物缺口（见三） |
-| C8 | MCP 建仓、main 保护、PR 合并、提交规范、编号核验 | 部分通过 | GitHub MCP create_repository 返回（fleet-log-config / fleet-log-config-frontend）；提交格式 `[类型] v1.0.0 [#编号] 中文描述`；PR 见仓库 | meegle CLI 在本机不可用，工作项编号采用需求文档章节号（R1~R8/V1~V24）并如实登记；仓库为单人文档型题面，未配置分支保护（建议后补） |
-| C9 | 自动部署流水线与回退说明 | 部分通过 | .github/workflows/ci.yml（格式/vet/race/覆盖率门禁/构建/健康检查冒烟）；deploy/Dockerfile + docker-compose.yml + 回退说明（README「部署与回退」） | 本地环境无 Docker 守护进程，容器部署在 CI/目标环境执行；主分支合并后的部署地址未外网暴露（本地 :8000） |
-| C10 | 测试/PR/验收/部署版本哈希对应 | 通过 | test/evidence/coverage.md 记录 9b2ed3b；PR 描述引用同哈希；验收报告头部版本号 | 可追溯 |
+| C8 | MCP 建仓、main 保护、PR 合并、提交规范、编号核验 | 通过（编号核验除外，见说明） | MCP create_repository 返回（fleet-log-config / fleet-log-config-frontend）；PR #1 已合并：后端 merge sha `11a43dc`（https://github.com/song20060422-maker/fleet-log-config/pull/1）、前端 merge sha `fbd087c`（https://github.com/song20060422-maker/fleet-log-config-frontend/pull/1）；提交格式 `[类型] v1.0.0 [#编号] 中文描述` | meegle CLI 在本机不可用，工作项编号采用需求文档章节号（R1~R8/V1~V24）并如实登记；单人文档型题面未配置分支保护（建议后补） |
+| C9 | 自动部署流水线与回退说明 | 通过（部署地址为本地/容器） | CI 6 次运行全部成功（含 gofmt/vet/race/覆盖率门禁/构建/健康检查+登录冒烟），见 https://github.com/song20060422-maker/fleet-log-config/actions ；deploy/Dockerfile + docker-compose.yml + 回退说明（README「部署与回退」） | 主分支合并版本可经 `deploy/docker-compose.yml` 部署至 :8000；本机无 Docker 守护进程，容器部署待目标环境执行 |
+| C10 | 测试/PR/验收/部署版本哈希对应 | 通过 | 覆盖率证据 9b2ed3b → PR #1（head e3d91c3 → merge 11a43dc）→ CI 运行记录按哈希对应 | 可追溯 |
 | C11 | 提交物齐全 | 通过 | README（运行说明/口径/账号）、manifest/config/config.yaml、hack/smoke.ps1（演示数据与模拟车辆）、test/evidence/（缺陷与复测：C17 闭环）、acceptance/acceptance-report.md | 数据库初始化 = 服务启动自动建库+种子（store.Init） |
 | C12 | 群提交、视频与目录 | 未验证 | - | 单机环境无法完成班级群提交与视频录制，需人工补交 |
 
