@@ -1,0 +1,190 @@
+{
+  "summary": {
+    "pass": 20,
+    "fail": 0,
+    "skip": 0,
+    "blocking": []
+  },
+  "checks": [
+    {
+      "cid": "C01",
+      "name": "审批人≠申请人",
+      "rule": "4.1",
+      "verify": "V1",
+      "status": "PASS",
+      "evidence": "共核查 2 条已处理申请",
+      "hints": ""
+    },
+    {
+      "cid": "C02",
+      "name": "申请要素完整(原因/五台车/间隔10~300)",
+      "rule": "4.1",
+      "verify": "V1",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C03",
+      "name": "批准后参数冻结",
+      "rule": "4.1",
+      "verify": "V2",
+      "status": "PASS",
+      "evidence": "已核查 param_history（无历史记录视为未发生变更）",
+      "hints": ""
+    },
+    {
+      "cid": "C04",
+      "name": "同车队单一未结束活动",
+      "rule": "4.2",
+      "verify": "V3",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C05",
+      "name": "试点隔离：未试点车不提前获得配置",
+      "rule": "4.2",
+      "verify": "V4",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C06",
+      "name": "推广门禁：两台试点均有效成功",
+      "rule": "4.2",
+      "verify": "V5,V6",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C07",
+      "name": "每车版本严格递增",
+      "rule": "4.3",
+      "verify": "V7",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C08",
+      "name": "拉取只给最新已发布版本",
+      "rule": "4.3",
+      "verify": "V7",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C09",
+      "name": "期望值/生效值模型",
+      "rule": "4.3",
+      "verify": "V8",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C10",
+      "name": "未知版本/跨车回执拒绝",
+      "rule": "4.4",
+      "verify": "V12",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C11",
+      "name": "重复成功幂等",
+      "rule": "4.4",
+      "verify": "V10",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C12",
+      "name": "旧版本迟到成功不覆盖",
+      "rule": "4.4/4.5",
+      "verify": "V11",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C13",
+      "name": "超时历史保留",
+      "rule": "4.5",
+      "verify": "V13",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C14",
+      "name": "失败不改变生效值",
+      "rule": "4.5",
+      "verify": "V14",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C15",
+      "name": "停止后不因迟到回执重启",
+      "rule": "4.5",
+      "verify": "V15",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C16",
+      "name": "停止保留已发/未发范围",
+      "rule": "4.6",
+      "verify": "V16",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C17",
+      "name": "恢复版本更高且目标=活动前值",
+      "rule": "4.6",
+      "verify": "V17",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C18",
+      "name": "完成/恢复完成门禁",
+      "rule": "4.7",
+      "verify": "V18",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C19",
+      "name": "逐车核查数据完备",
+      "rule": "4.7",
+      "verify": "V19",
+      "status": "PASS",
+      "evidence": "",
+      "hints": ""
+    },
+    {
+      "cid": "C20",
+      "name": "拒绝回执留痕",
+      "rule": "4.4",
+      "verify": "V9,V12",
+      "status": "PASS",
+      "evidence": "共 3 条拒绝留痕",
+      "hints": ""
+    }
+  ]
+}
