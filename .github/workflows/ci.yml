@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  push:
+    branches: [main, "dev/**"]
+  pull_request:
+    branches: [main, "dev/**"]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+          cache: true
+
+      - name: Format check
+        run: test -z "$(gofmt -l .)" || (gofmt -l . && exit 1)
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Unit tests with race detector
+        run: go test ./... -count=1 -race
+
+      - name: Coverage gate (>=85% per package)
+        run: bash hack/coverage.sh 85
+
+      - name: Build
+        run: go build -o fleet ./.
+
+      - name: Smoke (boot & health check)
+        run: |
+          go build -o fleet ./.
+          ./fleet &
+          SERVER_PID=$!
+          sleep 3
+          curl -sf http://127.0.0.1:8000/health
+          curl -sf http://127.0.0.1:8000/api/meta > /dev/null
+          curl -sf -X POST http://127.0.0.1:8000/api/auth/login \
+            -H 'Content-Type: application/json' \
+            -d '{"username":"dev","password":"fleet123456"}' > /dev/null
+          kill $SERVER_PID

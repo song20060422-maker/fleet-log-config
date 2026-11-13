@@ -1,0 +1,22 @@
+# 构建产物与本地数据
+bin/
+output/
+manifest/output/
+data/
+*.out
+fleet
+fleet.exe
+main
+main.exe
+
+# IDE / 系统
+.idea/
+.vscode/
+.settings/
+**/.DS_Store
+*.swp
+*.orig
+
+# Go 测试与覆盖率临时文件
+*.cover
+coverage.txt
