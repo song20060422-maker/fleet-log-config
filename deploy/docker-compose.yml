@@ -1,0 +1,20 @@
+services:
+  fleet:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: fleet-log-config:latest
+    container_name: fleet-log-config
+    ports:
+      - "8000:8000"
+    volumes:
+      - fleet-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8000/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  fleet-data:
