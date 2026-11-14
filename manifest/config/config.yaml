@@ -9,10 +9,13 @@ logger:
   level : "all"
   stdout: true
 
-# 数据库：SQLite 单文件（纯 Go 驱动，无需 cgo），服务重启后业务结果仍可查询
+# 数据库：MySQL 8.0（库 fleet_log，utf8mb4），与商城题共用同一实例的 3307 端口；
+# 服务启动自动建表与预置数据（幂等），重启后业务结果仍可查询。
+# 环境变量 FLEET_DB_LINK 可覆盖本链接（容器/CI 用）。
+# 单元测试使用纯 Go SQLite（无需外部依赖），链接形如 sqlite::@file(./data/test.db)。
 database:
   default:
-    link: "sqlite::@file(./data/fleet.db)"
+    link: "mysql:root:root@tcp(127.0.0.1:3307)/fleet_log?charset=utf8mb4&parseTime=True&loc=Local"
 
 # 业务参数
 fleet:

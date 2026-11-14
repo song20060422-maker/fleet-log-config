@@ -7,8 +7,12 @@
 ## 快速运行
 
 ```bash
-go run .            # 服务 :8000，SQLite 数据库自动建库并种子（data/fleet.db）
+go run .            # 服务 :8000，MySQL（fleet_log 库）自动建表并种子（幂等）
 ```
+
+- 数据库：MySQL 8.0，默认链接 `root:root@tcp(127.0.0.1:3307)/fleet_log`（见 `manifest/config/config.yaml`），
+  可用环境变量 `FLEET_DB_LINK` 覆盖；库需预先创建（`CREATE DATABASE fleet_log DEFAULT CHARACTER SET utf8mb4`）。
+- 单元测试使用纯 Go SQLite（无外部依赖）；MySQL 方言另有集成用例 `TestMySQLInitSeedAndUpsert`（设 `FLEET_TEST_MYSQL_LINK` 启用）。
 
 前端：
 
@@ -54,12 +58,12 @@ powershell -File hack/smoke.ps1   # 端到端演示冒烟（五组场景 + 拒�
 ## 部署与回退
 
 ```bash
-cd deploy && docker compose up -d --build   # 服务 :8000，数据卷 fleet-data
+cd deploy && docker compose up -d --build   # MySQL 8.0 + 服务 :8000，数据卷 fleet-mysql
 curl http://127.0.0.1:8000/health           # 健康检查
 ```
 
-- CI（`.github/workflows/ci.yml`）：gofmt → vet → 单测(-race) → 覆盖率门禁 → 构建 → 冒烟（健康检查 + 登录）。
-- 回退：镜像按 git commit 构建并打版本 tag，回退即 `docker compose` 重新拉起上一版本镜像 tag；SQLite 数据卷独立于容器，回退不回滚业务数据（业务规则要求停止/恢复记录保留）。
+- CI（`.github/workflows/ci.yml`）：gofmt → vet → 单测(-race) → MySQL 方言集成用例 → 覆盖率门禁 → 构建 → MySQL 启动冒烟（健康检查 + 登录）。
+- 回退：镜像按 git commit 构建并打版本 tag，回退即 `docker compose` 重新拉起上一版本镜像 tag；MySQL 数据卷独立于容器，回退不回滚业务数据（业务规则要求停止/恢复记录保留）。
 
 ## 需求对照
 

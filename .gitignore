@@ -20,3 +20,7 @@ main.exe
 # Go 测试与覆盖率临时文件
 *.cover
 coverage.txt
+
+# 本地运行日志
+run.log
+run.err

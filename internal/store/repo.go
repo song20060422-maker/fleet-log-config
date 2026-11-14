@@ -229,16 +229,26 @@ func (s *Store) OpenActivity(ctx context.Context, fleetID string) (model.Activit
 
 // ---------------------------------------------------------------- 活动逐车记录
 
+// UpsertActivityVehicle 写入或更新活动逐车记录（幂等，按方言选择冲突处理语法）。
 func (s *Store) UpsertActivityVehicle(ctx context.Context, av *model.ActivityVehicle) error {
-	_, err := s.db.Exec(ctx,
-		`INSERT INTO activity_vehicles(activity_id, vehicle_id, phase, dispatched, dispatch_at,
+	const columns = `activity_vehicles(activity_id, vehicle_id, phase, dispatched, dispatch_at,
 			target_version, target_value, base_value, base_version, result, fail_reason, acked_at, needs_recovery)
-		 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-		 ON CONFLICT(activity_id, vehicle_id) DO UPDATE SET
+		 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	var stmt string
+	if s.dialect == DialectMySQL {
+		stmt = `INSERT INTO ` + columns + ` ON DUPLICATE KEY UPDATE
+			phase=VALUES(phase), dispatched=VALUES(dispatched), dispatch_at=VALUES(dispatch_at),
+			target_version=VALUES(target_version), target_value=VALUES(target_value),
+			result=VALUES(result), fail_reason=VALUES(fail_reason), acked_at=VALUES(acked_at),
+			needs_recovery=VALUES(needs_recovery)`
+	} else {
+		stmt = `INSERT INTO ` + columns + ` ON CONFLICT(activity_id, vehicle_id) DO UPDATE SET
 			phase=excluded.phase, dispatched=excluded.dispatched, dispatch_at=excluded.dispatch_at,
 			target_version=excluded.target_version, target_value=excluded.target_value,
 			result=excluded.result, fail_reason=excluded.fail_reason, acked_at=excluded.acked_at,
-			needs_recovery=excluded.needs_recovery`,
+			needs_recovery=excluded.needs_recovery`
+	}
+	_, err := s.db.Exec(ctx, stmt,
 		av.ActivityID, av.VehicleID, av.Phase, av.Dispatched, av.DispatchAt,
 		av.TargetVersion, av.TargetValue, av.BaseValue, av.BaseVersion,
 		av.Result, av.FailReason, av.AckedAt, av.NeedsRecovery)
@@ -273,7 +283,7 @@ func (s *Store) ActivityVehicles(ctx context.Context, activityID string) ([]mode
 // NextSeq 取指定序列的下一个值（原子递增，行不存在则先建为 0 再加 1）。
 func (s *Store) NextSeq(ctx context.Context, name string) (int, error) {
 	if _, err := s.db.Exec(ctx,
-		`INSERT INTO seq(name, value) VALUES(?, 0) ON CONFLICT(name) DO NOTHING`, name); err != nil {
+		s.insertSQL(`seq(name, value) VALUES(?, 0)`, ` ON CONFLICT(name) DO NOTHING`), name); err != nil {
 		return 0, err
 	}
 	if _, err := s.db.Exec(ctx, `UPDATE seq SET value=value+1 WHERE name=?`, name); err != nil {
@@ -310,7 +320,7 @@ func (s *Store) MarkDelivered(ctx context.Context, vehicleID string, version int
 func (s *Store) LatestConfigVersion(ctx context.Context, vehicleID string) (model.PublishedVersion, bool, error) {
 	var pv model.PublishedVersion
 	ok, err := s.queryOne(ctx, &pv,
-		`SELECT vehicle_id, version, interval_seconds AS interval, kind, activity_id, created_at, created_by, delivered
+		`SELECT vehicle_id, version, interval_seconds AS `+"`interval`"+`, kind, activity_id, created_at, created_by, delivered
 		 FROM config_versions WHERE vehicle_id=? ORDER BY version DESC LIMIT 1`, vehicleID)
 	return pv, ok, err
 }
@@ -318,7 +328,7 @@ func (s *Store) LatestConfigVersion(ctx context.Context, vehicleID string) (mode
 func (s *Store) ConfigVersionsOfVehicle(ctx context.Context, vehicleID string) ([]model.PublishedVersion, error) {
 	var list []model.PublishedVersion
 	err := s.queryList(ctx, &list,
-		`SELECT vehicle_id, version, interval_seconds AS interval, kind, activity_id, created_at, created_by, delivered
+		`SELECT vehicle_id, version, interval_seconds AS `+"`interval`"+`, kind, activity_id, created_at, created_by, delivered
 		 FROM config_versions WHERE vehicle_id=? ORDER BY version`, vehicleID)
 	return list, err
 }
@@ -327,7 +337,7 @@ func (s *Store) ConfigVersionsOfVehicle(ctx context.Context, vehicleID string) (
 func (s *Store) ConfigVersionsOfActivity(ctx context.Context, activityID string) ([]model.PublishedVersion, error) {
 	var list []model.PublishedVersion
 	err := s.queryList(ctx, &list,
-		`SELECT vehicle_id, version, interval_seconds AS interval, kind, activity_id, created_at, created_by, delivered
+		`SELECT vehicle_id, version, interval_seconds AS `+"`interval`"+`, kind, activity_id, created_at, created_by, delivered
 		 FROM config_versions WHERE activity_id=? ORDER BY version`, activityID)
 	return list, err
 }

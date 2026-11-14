@@ -62,7 +62,7 @@
                                                          "VEH-02"
                                                      ],
                            "status":  "recovered",
-                           "stopped_at":  "2026-11-13T16:12:02Z",
+                           "stopped_at":  "2026-11-13T17:11:16Z",
                            "target_vehicle_ids":  [
                                                       "VEH-01",
                                                       "VEH-02",
@@ -85,17 +85,17 @@
                              "interval":  30,
                              "param_history":  [
                                                    {
-                                                       "at":  "2026-11-13T16:11:00Z",
+                                                       "at":  "2026-11-13T17:09:57Z",
                                                        "interval":  30,
                                                        "reason":  "????????????",
                                                        "status":  "approved"
                                                    },
                                                    {
-                                                       "at":  "2026-11-13T16:10:59Z",
+                                                       "at":  "2026-11-13T17:09:57Z",
                                                        "status":  "approved"
                                                    },
                                                    {
-                                                       "at":  "2026-11-13T16:10:59Z",
+                                                       "at":  "2026-11-13T17:09:57Z",
                                                        "interval":  30,
                                                        "reason":  "????????????",
                                                        "status":  "pending"
@@ -118,19 +118,19 @@
                              "interval":  15,
                              "param_history":  [
                                                    {
-                                                       "at":  "2026-11-13T16:11:00Z",
+                                                       "at":  "2026-11-13T17:10:10Z",
                                                        "interval":  15,
                                                        "reason":  "??????????(???????)",
                                                        "status":  "approved"
                                                    },
                                                    {
-                                                       "at":  "2026-11-13T16:11:00Z",
+                                                       "at":  "2026-11-13T17:10:10Z",
                                                        "interval":  15,
                                                        "reason":  "??????????(???????)",
                                                        "status":  "pending"
                                                    },
                                                    {
-                                                       "at":  "2026-11-13T16:11:00Z",
+                                                       "at":  "2026-11-13T17:10:09Z",
                                                        "interval":  15,
                                                        "reason":  "??????????",
                                                        "status":  "pending"
@@ -149,7 +149,7 @@
                      ],
     "config_pulls":  [
                          {
-                             "at":  "2026-11-13T16:11:00Z",
+                             "at":  "2026-11-13T17:09:59Z",
                              "granted":  false,
                              "reject_reason":  "è¯¥è½¦å°æªè¢«ä¸åä»»ä½æ´»å¨é\u0085ç½®ï¼æªè¯ç¹è½¦ä¸å¾æåè·å¾æ´»å¨é\u0085ç½®ï¼",
                              "vehicle_id":  "VEH-03",
@@ -174,7 +174,7 @@
                      {
                          "accepted":  true,
                          "activity_id":  "ACT-000001",
-                         "at":  "2026-11-13T16:11:00Z",
+                         "at":  "2026-11-13T17:10:00Z",
                          "id":  "R-1",
                          "outcome":  "success",
                          "recorded":  true,
@@ -185,7 +185,7 @@
                      {
                          "accepted":  true,
                          "activity_id":  "ACT-000001",
-                         "at":  "2026-11-13T16:11:00Z",
+                         "at":  "2026-11-13T17:10:01Z",
                          "id":  "R-2",
                          "outcome":  "success",
                          "recorded":  false,
@@ -196,7 +196,7 @@
                      {
                          "accepted":  true,
                          "activity_id":  "ACT-000001",
-                         "at":  "2026-11-13T16:11:00Z",
+                         "at":  "2026-11-13T17:10:02Z",
                          "id":  "R-3",
                          "outcome":  "success",
                          "recorded":  true,
@@ -207,7 +207,7 @@
                      {
                          "accepted":  false,
                          "activity_id":  "",
-                         "at":  "2026-11-13T16:11:00Z",
+                         "at":  "2026-11-13T17:10:05Z",
                          "id":  "R-4",
                          "outcome":  "success",
                          "recorded":  false,
@@ -218,7 +218,7 @@
                      {
                          "accepted":  false,
                          "activity_id":  "",
-                         "at":  "2026-11-13T16:11:00Z",
+                         "at":  "2026-11-13T17:10:06Z",
                          "id":  "R-5",
                          "outcome":  "success",
                          "recorded":  false,
@@ -229,7 +229,7 @@
                      {
                          "accepted":  true,
                          "activity_id":  "ACT-000001",
-                         "at":  "2026-11-13T16:11:00Z",
+                         "at":  "2026-11-13T17:10:07Z",
                          "id":  "R-6",
                          "outcome":  "success",
                          "recorded":  true,
@@ -240,7 +240,7 @@
                      {
                          "accepted":  true,
                          "activity_id":  "ACT-000001",
-                         "at":  "2026-11-13T16:11:00Z",
+                         "at":  "2026-11-13T17:10:07Z",
                          "id":  "R-7",
                          "outcome":  "success",
                          "recorded":  true,
@@ -251,7 +251,7 @@
                      {
                          "accepted":  true,
                          "activity_id":  "ACT-000001",
-                         "at":  "2026-11-13T16:11:00Z",
+                         "at":  "2026-11-13T17:10:08Z",
                          "id":  "R-8",
                          "outcome":  "success",
                          "recorded":  true,
@@ -262,7 +262,7 @@
                      {
                          "accepted":  true,
                          "activity_id":  "ACT-000002",
-                         "at":  "2026-11-13T16:11:00Z",
+                         "at":  "2026-11-13T17:10:12Z",
                          "id":  "R-9",
                          "outcome":  "success",
                          "recorded":  true,
@@ -273,7 +273,7 @@
                      {
                          "accepted":  false,
                          "activity_id":  "",
-                         "at":  "2026-11-13T16:12:02Z",
+                         "at":  "2026-11-13T17:11:16Z",
                          "id":  "R-10",
                          "outcome":  "success",
                          "recorded":  false,
@@ -284,7 +284,7 @@
                      {
                          "accepted":  true,
                          "activity_id":  "ACT-000002",
-                         "at":  "2026-11-13T16:12:02Z",
+                         "at":  "2026-11-13T17:11:19Z",
                          "id":  "R-11",
                          "outcome":  "success",
                          "recorded":  true,
@@ -295,7 +295,7 @@
                      {
                          "accepted":  true,
                          "activity_id":  "ACT-000002",
-                         "at":  "2026-11-13T16:12:02Z",
+                         "at":  "2026-11-13T17:11:20Z",
                          "id":  "R-12",
                          "outcome":  "failure",
                          "recorded":  true,
@@ -306,7 +306,7 @@
                      {
                          "accepted":  true,
                          "activity_id":  "ACT-000002",
-                         "at":  "2026-11-13T16:12:02Z",
+                         "at":  "2026-11-13T17:11:20Z",
                          "id":  "R-13",
                          "outcome":  "success",
                          "recorded":  true,
@@ -329,21 +329,21 @@
                          "published_versions":  [
                                                     {
                                                         "activity_id":  "ACT-000001",
-                                                        "created_at":  "2026-11-13T16:11:00Z",
+                                                        "created_at":  "2026-11-13T17:09:58Z",
                                                         "interval":  30,
                                                         "kind":  "pilot",
                                                         "version":  1
                                                     },
                                                     {
                                                         "activity_id":  "ACT-000002",
-                                                        "created_at":  "2026-11-13T16:11:00Z",
+                                                        "created_at":  "2026-11-13T17:10:11Z",
                                                         "interval":  15,
                                                         "kind":  "pilot",
                                                         "version":  6
                                                     },
                                                     {
                                                         "activity_id":  "ACT-000002",
-                                                        "created_at":  "2026-11-13T16:12:02Z",
+                                                        "created_at":  "2026-11-13T17:11:17Z",
                                                         "interval":  60,
                                                         "kind":  "recover",
                                                         "version":  8
@@ -368,21 +368,21 @@
                          "published_versions":  [
                                                     {
                                                         "activity_id":  "ACT-000001",
-                                                        "created_at":  "2026-11-13T16:11:00Z",
+                                                        "created_at":  "2026-11-13T17:09:59Z",
                                                         "interval":  30,
                                                         "kind":  "pilot",
                                                         "version":  2
                                                     },
                                                     {
                                                         "activity_id":  "ACT-000002",
-                                                        "created_at":  "2026-11-13T16:11:00Z",
+                                                        "created_at":  "2026-11-13T17:10:11Z",
                                                         "interval":  15,
                                                         "kind":  "pilot",
                                                         "version":  7
                                                     },
                                                     {
                                                         "activity_id":  "ACT-000002",
-                                                        "created_at":  "2026-11-13T16:12:02Z",
+                                                        "created_at":  "2026-11-13T17:11:18Z",
                                                         "interval":  60,
                                                         "kind":  "recover",
                                                         "version":  9
@@ -391,7 +391,7 @@
                          "result":  "success",
                          "timeout_events":  [
                                                 {
-                                                    "at":  "2026-11-13T16:12:00Z",
+                                                    "at":  "2026-11-13T17:11:11Z",
                                                     "resolved_by_late_success":  false,
                                                     "version":  7
                                                 }
@@ -411,7 +411,7 @@
                          "published_versions":  [
                                                     {
                                                         "activity_id":  "ACT-000001",
-                                                        "created_at":  "2026-11-13T16:11:00Z",
+                                                        "created_at":  "2026-11-13T17:10:04Z",
                                                         "interval":  30,
                                                         "kind":  "promote",
                                                         "version":  3
@@ -436,7 +436,7 @@
                          "published_versions":  [
                                                     {
                                                         "activity_id":  "ACT-000001",
-                                                        "created_at":  "2026-11-13T16:11:00Z",
+                                                        "created_at":  "2026-11-13T17:10:04Z",
                                                         "interval":  30,
                                                         "kind":  "promote",
                                                         "version":  4
@@ -461,7 +461,7 @@
                          "published_versions":  [
                                                     {
                                                         "activity_id":  "ACT-000001",
-                                                        "created_at":  "2026-11-13T16:11:00Z",
+                                                        "created_at":  "2026-11-13T17:10:05Z",
                                                         "interval":  30,
                                                         "kind":  "promote",
                                                         "version":  5

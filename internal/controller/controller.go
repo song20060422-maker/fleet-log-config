@@ -4,6 +4,7 @@ package controller
 import (
 	"context"
 	"errors"
+	"os"
 	"strings"
 	"time"
 
@@ -83,20 +84,11 @@ func NewServer(svc *logic.Service, names ...string) *ghttp.Server {
 // Run 读取配置、初始化数据库并启动服务。
 func Run() error {
 	ctx := gctx.GetInitCtx()
-	link := g.Cfg().MustGet(ctx, "database.default.link", "sqlite::@file(./data/fleet.db)").String()
-	timeout := g.Cfg().MustGet(ctx, "fleet.timeoutSeconds", model.DefaultTimeoutSecond).Int()
-	if dir := sqliteDir(link); dir != "" {
-		if err := gfile.Mkdir(dir); err != nil {
-			return err
-		}
-	}
-	st, err := store.Open(link)
+	st, err := OpenStore(ctx)
 	if err != nil {
 		return err
 	}
-	if err := st.Init(ctx); err != nil {
-		return err
-	}
+	timeout := g.Cfg().MustGet(ctx, "fleet.timeoutSeconds", model.DefaultTimeoutSecond).Int()
 	svc := logic.New(st, time.Duration(timeout)*time.Second)
 	go func() {
 		ticker := time.NewTicker(time.Second)
@@ -110,6 +102,42 @@ func Run() error {
 	s := NewServer(svc)
 	s.Run()
 	return nil
+}
+
+// OpenStore 解析数据库链接（环境变量 FLEET_DB_LINK 优先，其次配置文件 database.default.link），
+// 打开连接并完成建表与预置数据（幂等）。
+func OpenStore(ctx context.Context) (*store.Store, error) {
+	link := os.Getenv("FLEET_DB_LINK")
+	if link == "" {
+		link = g.Cfg().MustGet(ctx, "database.default.link", "sqlite::@file(./data/fleet.db)").String()
+	}
+	if dir := sqliteDir(link); dir != "" {
+		if err := gfile.Mkdir(dir); err != nil {
+			return nil, err
+		}
+	}
+	g.Log().Infof(ctx, "数据库：%s（方言 %s）", maskLink(link), store.DialectOf(link))
+	st, err := store.Open(link)
+	if err != nil {
+		return nil, err
+	}
+	if err := st.Init(ctx); err != nil {
+		return nil, err
+	}
+	return st, nil
+}
+
+// maskLink 隐藏链接中的口令，避免日志泄露（仅处理「驱动:用户:口令@地址」形式）。
+func maskLink(link string) string {
+	at := strings.Index(link, "@")
+	if at <= 0 {
+		return link
+	}
+	head := link[:at]
+	if strings.HasSuffix(head, ":") || strings.Count(head, ":") < 2 {
+		return link
+	}
+	return head[:strings.LastIndex(head, ":")] + ":***" + link[at:]
 }
 
 // sqliteDir 从 sqlite link 中解析数据库文件所在目录（用于自动建目录）。
