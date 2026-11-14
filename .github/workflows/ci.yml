@@ -9,6 +9,23 @@ on:
 jobs:
   backend:
     runs-on: ubuntu-latest
+    services:
+      # MySQL 8.0：用于方言集成用例（建表/预置/幂等 upsert/序列）与启动冒烟
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: fleet_ci
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=5s
+          --health-timeout=3s
+          --health-retries=20
+    env:
+      FLEET_TEST_MYSQL_LINK: mysql:root:root@tcp(127.0.0.1:3306)/fleet_ci?charset=utf8mb4&parseTime=True&loc=Local
+      FLEET_DB_LINK: mysql:root:root@tcp(127.0.0.1:3306)/fleet_ci_smoke?charset=utf8mb4&parseTime=True&loc=Local
     steps:
       - uses: actions/checkout@v4
 
@@ -26,14 +43,19 @@ jobs:
       - name: Unit tests with race detector
         run: go test ./... -count=1 -race
 
+      - name: MySQL integration tests (DDL / seed / idempotent upsert)
+        run: go test ./internal/store -run TestMySQLInitSeedAndUpsert -count=1 -v
+
       - name: Coverage gate (>=85% per package)
         run: bash hack/coverage.sh 85
 
       - name: Build
         run: go build -o fleet ./.
 
-      - name: Smoke (boot & health check)
+      - name: Smoke on MySQL (boot, auto DDL & health check)
         run: |
+          docker exec ${{ job.services.mysql.id }} mysql -uroot -proot \
+            -e "CREATE DATABASE IF NOT EXISTS fleet_ci_smoke DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
           go build -o fleet ./.
           ./fleet &
           SERVER_PID=$!

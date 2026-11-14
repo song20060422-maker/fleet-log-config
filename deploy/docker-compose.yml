@@ -1,4 +1,24 @@
 services:
+  # 业务库：MySQL 8.0（utf8mb4）。已有实例时可注释掉本服务，
+  # 并把 FLEET_DB_LINK 指向现有实例（如 mysql:root:root@tcp(host:3307)/fleet_log?charset=utf8mb4&parseTime=True&loc=Local）。
+  mysql:
+    image: mysql:8.0
+    container_name: fleet-mysql
+    restart: unless-stopped
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fleet_log
+    ports:
+      - "13306:3306"
+    volumes:
+      - fleet-mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
   fleet:
     build:
       context: ..
@@ -7,8 +27,12 @@ services:
     container_name: fleet-log-config
     ports:
       - "8000:8000"
-    volumes:
-      - fleet-data:/app/data
+    environment:
+      # 启动自动建表与预置数据（幂等），无需手工初始化
+      FLEET_DB_LINK: mysql:root:root@tcp(mysql:3306)/fleet_log?charset=utf8mb4&parseTime=True&loc=Local
+    depends_on:
+      mysql:
+        condition: service_healthy
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8000/health"]
@@ -17,4 +41,4 @@ services:
       retries: 5
 
 volumes:
-  fleet-data:
+  fleet-mysql:

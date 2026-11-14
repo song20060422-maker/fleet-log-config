@@ -1,5 +1,5 @@
 ﻿# 端到端演示冒烟：驱动五组业务场景并导出业务状态（Skill fleet-log-config-check 输入）。
-# 前置：本地 fleet 服务已启动（默认 :8000），data/fleet.db 为空库。
+# 前置：本地 fleet 服务已启动（默认 :8000），数据库为空库（MySQL fleet_log 或 SQLite 由配置决定）。
 # 用法：powershell -File hack/smoke.ps1
 $ErrorActionPreference = "Stop"
 $base = "http://127.0.0.1:8000"

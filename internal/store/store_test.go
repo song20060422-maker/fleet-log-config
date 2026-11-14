@@ -24,13 +24,21 @@ func newStore(t *testing.T) *store.Store {
 }
 
 func TestOpenRejectsUnsupportedDriver(t *testing.T) {
-	st, err := store.Open("mysql:root:pass@tcp(127.0.0.1:1)/none")
-	if err != nil {
-		return // 某些环境下 gdb 立即报错，同样满足预期
+	if _, err := store.Open("oracle:scott:tiger@127.0.0.1:1521/orcl"); err == nil {
+		t.Fatal("不支持的数据库链接应直接返回错误")
 	}
-	defer func() { _ = st.Close(context.Background()) }()
-	if _, err := st.Vehicles(context.Background()); err == nil {
-		t.Fatal("未注册的数据库驱动应在首次使用时报错")
+}
+
+func TestDialectOf(t *testing.T) {
+	cases := map[string]string{
+		"mysql:root:root@tcp(127.0.0.1:3307)/fleet_log?charset=utf8mb4": store.DialectMySQL,
+		"sqlite::@file(./data/fleet.db)":                                store.DialectSQLite,
+		"MYSQL:root:root@tcp(127.0.0.1:3307)/fleet_log":                 store.DialectMySQL,
+	}
+	for link, want := range cases {
+		if got := store.DialectOf(link); got != want {
+			t.Fatalf("DialectOf(%q)=%q, 期望 %q", link, got, want)
+		}
 	}
 }
 

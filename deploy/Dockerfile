@@ -6,12 +6,11 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 go build -o fleet ./.
 
-# 运行阶段（纯 Go sqlite，无需 cgo）
+# 运行阶段（纯 Go 编译，无 cgo；MySQL 或 SQLite 由 FLEET_DB_LINK 决定）
 FROM alpine:3.20
 WORKDIR /app
 COPY --from=builder /app/fleet ./fleet
 COPY manifest/config/config.yaml ./manifest/config/config.yaml
 ENV GF_GCFG_PATH=./manifest/config
 EXPOSE 8000
-VOLUME ["/app/data"]
 CMD ["./fleet"]
